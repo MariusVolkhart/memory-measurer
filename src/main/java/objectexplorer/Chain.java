@@ -1,13 +1,13 @@
 package objectexplorer;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Field;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.Objects;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * A chain of references, which starts at a root object and leads to a
@@ -26,6 +26,7 @@ public abstract class Chain {
 
   static Chain root(Object value) {
     return new Chain(null, Objects.requireNonNull(value)) {
+      @NotNull
       @Override
       public Class<?> getValueType() {
         return getValue().getClass();
@@ -53,7 +54,8 @@ public abstract class Chain {
    * Returns the parent chain, from which this chain was created.
    * @throws IllegalStateException if {@code !hasParent()}, then an
    */
-  public @Nonnull Chain getParent() {
+  @NotNull
+  public Chain getParent() {
     if (parent == null) {
        throw new IllegalStateException("This is the root value, it has no parent");
     }
@@ -68,7 +70,8 @@ public abstract class Chain {
     return value;
   }
 
-  public abstract @Nonnull Class<?> getValueType();
+  @NotNull
+  public abstract Class<?> getValueType();
 
   /**
    * Returns whether the connection of the parent chain and this chain is
@@ -97,7 +100,8 @@ public abstract class Chain {
   /**
    * Returns the root object of this chain.
    */
-  public @Nonnull Object getRoot() {
+  @NotNull
+  public Object getRoot() {
     Chain current = this;
     while (current.hasParent()) {
       current = current.getParent();
@@ -151,6 +155,7 @@ public abstract class Chain {
       return false;
     }
 
+    @NotNull
     @Override
     public Class<?> getValueType() {
       return field.getType();
@@ -179,6 +184,7 @@ public abstract class Chain {
       return true;
     }
 
+    @NotNull
     @Override
     public Class<?> getValueType() {
       return getParent().getValue().getClass().getComponentType();

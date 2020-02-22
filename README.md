@@ -1,12 +1,7 @@
-# ObjectExplorer
+# Memory Measurer
 
-Fork from [DimitrisAndreou/memory-measurer](https://github.com/DimitrisAndreou/memory-measurer) 
-
-1. Rewrite it by using pure Java 8 API instead of Google Guava
-2. Convert it to maven project 
-
-
-## How to use
+## Using
+This library requires Java 11 or higher.
 
 ```java
 long memory = MemoryMeasurer.measureBytes(new HashMap());

@@ -16,8 +16,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import javax.annotation.Nonnull;
-
 import objectexplorer.ObjectVisitor.Traversal;
 
 /**
@@ -93,8 +91,6 @@ public class ObjectExplorer {
           break;
       }
 
-      // only nonnull values pushed in the stack
-      @Nonnull
       Object value = chain.getValue();
       Class<?> valueClass = value.getClass();
       if (valueClass.isArray()) {
