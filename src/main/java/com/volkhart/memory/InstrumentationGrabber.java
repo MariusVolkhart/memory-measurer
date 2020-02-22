@@ -1,4 +1,4 @@
-package objectexplorer;
+package com.volkhart.memory;
 
 import java.lang.instrument.Instrumentation;
 
@@ -18,7 +18,7 @@ public class InstrumentationGrabber {
     private static void checkSetup() {
       if (instrumentation == null) {
         throw new IllegalStateException("Instrumentation is not setup properly. "
-            + "You have to pass -javaagent:path/to/memory-measurer.jar to the java interpreter");
+            + "You have to pass -javaagent:path/to/measurer.jar to the java interpreter");
       }
     }
     

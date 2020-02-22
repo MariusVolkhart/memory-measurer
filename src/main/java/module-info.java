@@ -1,5 +1,5 @@
-module com.volkhart.memorymeasurer {
+module com.volkhart.memory {
     requires java.instrument;
     requires org.jetbrains.annotations;
-    exports objectexplorer;
+    exports com.volkhart.memory;
 }

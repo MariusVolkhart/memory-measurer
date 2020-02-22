@@ -1,4 +1,4 @@
-package objectexplorer;
+package com.volkhart.memory;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
-import objectexplorer.ObjectExplorer.Feature;
+import com.volkhart.memory.ObjectExplorer.Feature;
 
 /**
  * A tool that can qualitatively measure the footprint ({@literal e.g.}, number of objects,

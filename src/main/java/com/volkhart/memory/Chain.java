@@ -1,4 +1,4 @@
-package objectexplorer;
+package com.volkhart.memory;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

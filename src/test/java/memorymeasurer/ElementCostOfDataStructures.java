@@ -63,9 +63,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import objectexplorer.MemoryMeasurer;
-import objectexplorer.ObjectGraphMeasurer;
-import objectexplorer.ObjectGraphMeasurer.Footprint;
+import com.volkhart.memory.MemoryMeasurer;
+import com.volkhart.memory.ObjectGraphMeasurer;
+import com.volkhart.memory.ObjectGraphMeasurer.Footprint;
 
 public class ElementCostOfDataStructures {
   public static void main(String[] args) throws Exception {

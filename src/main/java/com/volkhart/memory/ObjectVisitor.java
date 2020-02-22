@@ -1,4 +1,4 @@
-package objectexplorer;
+package com.volkhart.memory;
 
 /**
  * A visitor that controls an object traversal. Implementations

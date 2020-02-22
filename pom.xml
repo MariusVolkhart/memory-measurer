@@ -9,7 +9,7 @@
 	</parent>
 
 	<groupId>com.volkhart.memory</groupId>
-	<artifactId>memory-measurer</artifactId>
+	<artifactId>measurer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Memory Measurer</name>
@@ -82,8 +82,7 @@
 					<configuration>
 						<archive>
 							<manifestEntries>
-								<Premain-Class>objectexplorer.InstrumentationGrabber</Premain-Class>
-								<Automatic-Module-Name>com.volkhart.memory.measurer</Automatic-Module-Name>
+								<Premain-Class>com.volkhart.memory.InstrumentationGrabber</Premain-Class>
 							</manifestEntries>
 						</archive>
 					</configuration>

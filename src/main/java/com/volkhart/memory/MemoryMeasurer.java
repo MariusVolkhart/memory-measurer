@@ -1,4 +1,4 @@
-package objectexplorer;
+package com.volkhart.memory;
 
 import java.lang.instrument.Instrumentation;
 import java.util.Objects;

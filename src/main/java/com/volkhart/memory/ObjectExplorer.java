@@ -1,4 +1,4 @@
-package objectexplorer;
+package com.volkhart.memory;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Array;
@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import objectexplorer.ObjectVisitor.Traversal;
+import com.volkhart.memory.ObjectVisitor.Traversal;
 
 /**
  * A depth-first object graph explorer. The traversal starts at a root (an {@code Object}) and
