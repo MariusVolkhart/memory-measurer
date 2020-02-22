@@ -1,6 +1,6 @@
 name: Java CI
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   build:
@@ -12,9 +12,11 @@ jobs:
         java_version: [11]
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up JDK ${{ matrix.java_version }}
       uses: actions/setup-java@v1
       with:
         java-version: ${{ matrix.java_version }}
+
     - name: Build with Maven
       run: mvn -B package --file pom.xml
