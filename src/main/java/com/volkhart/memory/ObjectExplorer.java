@@ -4,19 +4,12 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.EnumSet;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import com.volkhart.memory.ObjectVisitor.Traversal;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A depth-first object graph explorer. The traversal starts at a root (an {@code Object}) and
@@ -25,7 +18,7 @@ import com.volkhart.memory.ObjectVisitor.Traversal;
  * decides for each explored path whether to continue exploration of that path, and it can also
  * return a value at the end of the traversal.
  */
-public class ObjectExplorer {
+final class ObjectExplorer {
   private ObjectExplorer() {}
 
   /**
@@ -45,7 +38,7 @@ public class ObjectExplorer {
    * @return whatever value is returned by the visitor at the end of the traversal
    * @see ObjectVisitor
    */
-  public static <T> T exploreObject(Object rootObject, ObjectVisitor<T> visitor) {
+  static <T> T exploreObject(@NotNull Object rootObject, ObjectVisitor<T> visitor) {
     return exploreObject(rootObject, visitor, EnumSet.noneOf(Feature.class));
   }
 
@@ -74,11 +67,10 @@ public class ObjectExplorer {
    * @return whatever value is returned by the visitor at the end of the traversal
    * @see ObjectVisitor
    */
-  public static <T> T exploreObject(Object rootObject, ObjectVisitor<T> visitor,
-      EnumSet<Feature> features) {
-    Deque<Chain> stack = new ArrayDeque<Chain>(32);
-    if (rootObject != null)
-      stack.push(Chain.root(rootObject));
+  static <T> T exploreObject(@NotNull Object rootObject, ObjectVisitor<T> visitor, EnumSet<Feature> features) {
+    Deque<Chain> stack = new ArrayDeque<>(32);
+    Objects.requireNonNull(rootObject);
+    stack.push(Chain.root(rootObject));
 
     while (!stack.isEmpty()) {
       Chain chain = stack.pop();
@@ -104,7 +96,7 @@ public class ObjectExplorer {
           }
           if (childValue == null) {
             if (features.contains(Feature.VISIT_NULL))
-              visitor.visit(chain.appendArrayIndex(i, childValue));
+              visitor.visit(chain.appendArrayIndex(i, null));
             continue;
           }
           stack.push(chain.appendArrayIndex(i, childValue));
@@ -113,23 +105,24 @@ public class ObjectExplorer {
         for (Field field : getAllFields(value)) {
           if (Modifier.isStatic(field.getModifiers()))
             continue;
-          Object childValue = null;
+          Object childValue;
           try {
             childValue = field.get(value);
           } catch (Exception e) {
             throw new AssertionError(e);
           }
           if (childValue == null) {
-            if (features.contains(Feature.VISIT_NULL))
-              visitor.visit(chain.appendField(field, childValue));
+            if (features.contains(Feature.VISIT_NULL)) {
+              visitor.visit(chain.appendField(field, null));
+            }
             continue;
           }
           boolean isPrimitive = field.getType().isPrimitive();
           Chain extendedChain = chain.appendField(field, childValue);
           if (isPrimitive) {
-            if (features.contains(Feature.VISIT_PRIMITIVES))
+            if (features.contains(Feature.VISIT_PRIMITIVES)) {
               visitor.visit(extendedChain);
-            continue;
+            }
           } else {
             stack.push(extendedChain);
           }
@@ -139,9 +132,8 @@ public class ObjectExplorer {
     return visitor.result();
   }
 
-  public static class AtMostOncePredicate implements Predicate<Chain> {
-    private final Set<Object> interner =
-        Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
+  static class AtMostOncePredicate implements Predicate<Chain> {
+    private final Set<Object> interner = Collections.newSetFromMap(new IdentityHashMap<>());
 
     @Override
     public boolean test(Chain chain) {
@@ -150,12 +142,10 @@ public class ObjectExplorer {
     }
   }
 
-  static final Predicate<Chain> notEnumFieldsOrClasses = (chain) -> {
-    return !(Enum.class.isAssignableFrom(chain.getValueType())
-        || chain.getValue() instanceof Class<?>);
-  };
+  static final Predicate<Chain> notEnumFieldsOrClasses = (chain) ->
+      !(Enum.class.isAssignableFrom(chain.getValueType()) || chain.getValue() instanceof Class<?>);
 
-  static final Function<Chain, Object> chainToObject = (chain) -> chain.getValue();
+  static final Function<Chain, Object> chainToObject = Chain::getValue;
 
 
   private static Iterable<Field> getAllFields(Object o) {
@@ -167,7 +157,7 @@ public class ObjectExplorer {
     }
 
     // all together so there is only one security check
-    AccessibleObject.setAccessible(fields.toArray(new AccessibleObject[fields.size()]), true);
+    AccessibleObject.setAccessible(fields.toArray(new AccessibleObject[0]), true);
     return fields;
   }
 
@@ -176,7 +166,7 @@ public class ObjectExplorer {
    *
    * @see ObjectExplorer#exploreObject(Object, ObjectVisitor, EnumSet)
    */
-  public enum Feature {
+  enum Feature {
     /**
      * Null references should be visited.
      */

@@ -15,17 +15,18 @@ import java.util.Objects;
  *
  * @author andreou
  */
-public abstract class Chain {
+abstract class Chain {
   private final Object value;
+  @Nullable
   private final Chain parent;
 
-  Chain(Chain parent, Object value) {
+  Chain(@Nullable Chain parent, Object value) {
     this.parent = parent;
     this.value = value;
   }
 
-  static Chain root(Object value) {
-    return new Chain(null, Objects.requireNonNull(value)) {
+  static Chain root(@NotNull Object value) {
+    return new Chain(null, value) {
       @NotNull
       @Override
       public Class<?> getValueType() {

@@ -8,7 +8,7 @@ package com.volkhart.memory;
  * (can be defined as {@code Void} to denote no result}.
  * @see ObjectExplorer
  */
-public interface ObjectVisitor<T> {
+interface ObjectVisitor<T> {
   /**
    * Visits an explored value (the whole chain from the root object
    * leading to the value is provided), and decides whether to continue

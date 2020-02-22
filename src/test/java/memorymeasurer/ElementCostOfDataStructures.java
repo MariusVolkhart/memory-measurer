@@ -65,7 +65,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import com.volkhart.memory.MemoryMeasurer;
 import com.volkhart.memory.ObjectGraphMeasurer;
-import com.volkhart.memory.ObjectGraphMeasurer.Footprint;
+import com.volkhart.memory.Footprint;
 
 public class ElementCostOfDataStructures {
   public static void main(String[] args) throws Exception {
@@ -265,7 +265,7 @@ public class ElementCostOfDataStructures {
     Footprint footprint = ObjectGraphMeasurer.measure(o);
     long bytes = MemoryMeasurer.measureBytes(o);
     System.out.printf("%40s :: Bytes = %6d, Objects = %5d Refs = %5d Primitives = %s%n",
-        caption, bytes, footprint.getObjects(), footprint.getReferences(), footprint.getPrimitives());
+        caption, bytes, footprint.getObjectCount(), footprint.getReferenceCount(), footprint.getPrimitives());
   }
 
   static AvgEntryCost averageEntryCost(Populator<?> populator, int initialEntries, int entriesToAdd) {
@@ -283,8 +283,8 @@ public class ElementCostOfDataStructures {
     Footprint footprint2 = ObjectGraphMeasurer.measure(collection2, predicate::apply);
     long bytes2 = MemoryMeasurer.measureBytes(collection2, predicate::apply);
 
-    double objects = (footprint2.getObjects() - footprint1.getObjects()) / (double) entriesToAdd;
-    double refs = (footprint2.getReferences() - footprint1.getReferences()) / (double) entriesToAdd;
+    double objects = (footprint2.getObjectCount() - footprint1.getObjectCount()) / (double) entriesToAdd;
+    double refs = (footprint2.getReferenceCount() - footprint1.getReferenceCount()) / (double) entriesToAdd;
     double bytes = (bytes2 - bytes1) / (double)entriesToAdd;
 
     Map<Class<?>, Double> primitives = Maps.newHashMap();
